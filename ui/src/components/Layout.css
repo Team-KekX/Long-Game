@@ -1,0 +1,16 @@
+.main-content {
+  margin-left: 200px; /* Matches the max-width of the sidebar */
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    margin-left: 0;
+  }
+}

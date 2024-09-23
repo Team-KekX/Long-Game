@@ -3,10 +3,10 @@ use axum::{
     Router,
 };
 
-pub mod models;
-pub mod repositories;
-pub mod services;
-pub mod controllers;
+mod models;
+mod repositories;
+mod services;
+mod controllers;
 
 #[tokio::main]
 async fn main() {

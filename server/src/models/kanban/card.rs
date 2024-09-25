@@ -5,6 +5,8 @@ use uuid::Uuid;
 
 use crate::models::Identifiable;
 
+use super::Label;
+
 /// Struct for representing a kanban card.
 pub struct Card {
     id: Uuid,
@@ -13,8 +15,8 @@ pub struct Card {
     created_at: DateTime<Utc>,
     due_date: Option<DateTime<Utc>>,
     finished_at: Option<DateTime<Utc>>,
-    labels: Vec<String>, //TODO: change to enum
-    custom_fields: Vec<String>, //TODO: change to custom fields
+    labels: Vec<Label>, //TODO: change to labels model
+    custom_fields: Vec<String>, //TODO: change to custom fields model
     column_id: Uuid,
     position: u16,
 }

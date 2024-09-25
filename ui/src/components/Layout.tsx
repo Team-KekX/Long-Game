@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SideBar from './SideBar';
-import KanbanBoard from './Kanban/KanbanBoard';
+import { KanbanBoard } from './Kanban/KanbanBoard';
 import './Layout.css';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

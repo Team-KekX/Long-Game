@@ -1,48 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './KanbanBoard.css';
+import { KanbanBoardProps } from './KanbanTypes';
+import { fetchKanbanBoard } from './KanbanService';
+import { KanbanColumn } from './KanbanColumn';
 
-interface KanbanCard {
-  id: string;
-  title: string;
-  status: 'Backlog' | 'In Progress' | 'Done';
-}
-
-const KanbanBoard: React.FC = () => {
-  const [cards, setCards] = useState<KanbanCard[]>([]);
+export const KanbanBoard: React.FC = () => {
+  const [board, setBoard] = useState<KanbanBoardProps | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCards = async () => {
+    const loadBoard = async () => {
       try {
-        const response = await axios.get('/api/kanban');
-        setCards(response.data);
-      } catch (error) {
-        console.error('Error fetching Kanban cards:', error);
+        const boardId = 'your-board-id'; // Replace with actual board ID or prop
+        const data = await fetchKanbanBoard(boardId);
+        setBoard(data);
+      } catch (err) {
+        setError('Failed to load Kanban board');
+        console.error(err);
       }
     };
 
-    fetchCards();
+    loadBoard();
   }, []);
 
-  const columns = ['Backlog', 'In Progress', 'Done'];
+  if (error) return <div>Error: {error}</div>;
+  if (!board) return <div>Loading...</div>;
 
   return (
     <div className="kanban-board">
-      {columns.map(column => (
-        <div key={column} className="kanban-column">
-          <h2>{column}</h2>
-          {cards
-            .filter(card => card.status === column)
-            .map(card => (
-              <div key={card.id} className="kanban-card">
-                {card.title}
-              </div>
-            ))
-          }
-        </div>
-      ))}
+      <h1>{board.title}</h1>
+      <div className="kanban-columns">
+        {board.columns.map(column => (
+          <KanbanColumn key={column.id} {...column} />
+        ))}
+      </div>
     </div>
   );
 };
-
-export default KanbanBoard;

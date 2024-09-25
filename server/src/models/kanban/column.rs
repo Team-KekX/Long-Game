@@ -12,6 +12,7 @@ pub struct Column {
     created_at: DateTime<Utc>,
     //TODO: add cards vector
     board_id: Uuid,
+    position: u16,
 }
 
 impl Identifiable for Column {
@@ -28,6 +29,7 @@ impl Column {
             description: String::from(description),
             created_at: Utc::now(),
             board_id,
+            position: 0,
         }
     }
 }

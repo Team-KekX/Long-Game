@@ -4,15 +4,13 @@ use crate::models::Identifiable;
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
-use super::Column;
-
 /// Struct for representing a kanban board.
 pub struct Board {
     id: Uuid,
     pub name: String,
     pub description: String,
     created_at: DateTime<Utc>,
-    columns: Vec<Column>,
+    columns: Vec<Uuid>,
     //TODO: add columns vector
 }
 

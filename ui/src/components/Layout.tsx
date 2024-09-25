@@ -4,7 +4,7 @@ import KanbanBoard from './Kanban/KanbanBoard';
 import './Layout.css';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [currentView, setCurrentView] = useState<'home' | 'kanban' | 'shopping' | 'settings' | 'feedback'>('home');
+    const [currentView, setCurrentView] = useState<'home' | 'kanban' | 'shopping' | 'mealPlanner' | 'settings' | 'feedback'>('home');
 
     const renderView = () => {
         switch (currentView) {
@@ -14,6 +14,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 return children;
             case 'shopping':
                 return <div>Shopping List View</div>;
+            case 'mealPlanner':
+                return <div>Meal Planner View</div>;
             case 'settings':
                 return <div>Settings View</div>;
             case 'feedback':

@@ -16,7 +16,7 @@ pub struct Card {
     due_date: Option<DateTime<Utc>>,
     finished_at: Option<DateTime<Utc>>,
     labels: Vec<Label>, //TODO: change to labels model
-    custom_fields: Vec<String>, //TODO: change to custom fields model
+    custom_fields: Vec<Uuid>,
     column_id: Uuid,
     position: u16,
 }

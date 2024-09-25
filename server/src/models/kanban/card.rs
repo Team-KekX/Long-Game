@@ -13,9 +13,13 @@ pub struct Card {
     created_at: DateTime<Utc>,
     due_date: Option<DateTime<Utc>>,
     finished_at: Option<DateTime<Utc>>,
-    labels: Vec<Uuid>, //TODO: change to labels model
+    /// IDs of the labels associated with the card.
+    labels: Vec<Uuid>,
+    /// IDs of the custom fields associated with the card.
     custom_fields: Vec<Uuid>,
+    /// ID of the column where the card is located.
     column_id: Uuid,
+    /// Position of the card in the column.
     position: u16,
 }
 

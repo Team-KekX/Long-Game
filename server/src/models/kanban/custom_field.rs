@@ -12,6 +12,7 @@ pub struct CustomField {
     description: String,
     created_at: DateTime<Utc>,
     data_type: String, //TODO: change to CustomFieldType enum
+    /// ID of the board the custom field is associated with.
     board_id: Uuid,
 }
 

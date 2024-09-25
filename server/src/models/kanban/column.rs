@@ -10,9 +10,10 @@ pub struct Column {
     name: String,
     description: String,
     created_at: DateTime<Utc>,
-    //TODO: add cards vector
+    /// ID of the board the column is associated with.
     board_id: Uuid,
-    position: u16,
+    /// Position of the column in the board.
+    position: u8,
 }
 
 impl Identifiable for Column {

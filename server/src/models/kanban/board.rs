@@ -10,8 +10,8 @@ pub struct Board {
     pub name: String,
     pub description: String,
     created_at: DateTime<Utc>,
+    /// IDs of the columns in the board.
     columns: Vec<Uuid>,
-    //TODO: add columns vector
 }
 
 impl Identifiable for Board {

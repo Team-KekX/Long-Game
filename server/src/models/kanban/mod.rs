@@ -18,3 +18,4 @@ pub use self::label::Label;
 /// Exporting the CustomField model.
 pub use self::custom_field::CustomField;
 pub use self::custom_field::CustomFieldType;
+pub use self::custom_field::CustomFieldValue;

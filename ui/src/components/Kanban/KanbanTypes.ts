@@ -14,7 +14,4 @@ export interface KanbanCardProps {
   id: string;
   title: string;
   description: string;
-  dueDate?: Date;
-  assignee?: string;
-  tags?: string[];
 }

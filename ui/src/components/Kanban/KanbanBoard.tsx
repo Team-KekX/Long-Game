@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { DragDropContext, DropResult, DragStart } from 'react-beautiful-dnd';
 import { KanbanBoardProps } from './KanbanTypes';
-import { fetchKanbanBoard } from './KanbanService';
 import { KanbanColumn } from './KanbanColumn';
+import './KanbanBoard.css';
 
 // Placeholder data
 const placeholderBoard: KanbanBoardProps = {
@@ -55,19 +56,54 @@ export const KanbanBoard: React.FC = () => {
     };
 
     loadBoard();
-  }, []);
+    console.log('Board data:', board);
+  }, [board]);
 
-  if (error) return <div>Error: {error}</div>;
-  if (!board) return <div>Loading...</div>;
+  const onDragStart = (start: DragStart) => {
+    console.log('Drag started', start);
+  };
 
-  return (
-    <div className="kanban-board">
-      <h1>{board.title}</h1>
-      <div className="kanban-columns">
-        {board.columns.map(column => (
-          <KanbanColumn key={column.id} {...column} />
-        ))}
-      </div>
-    </div>
-  );
+	const onDragEnd = (result: DropResult) => {
+		console.log('Drag ended:', result);
+		if (!result.destination || !board) return;
+
+		const { source, destination } = result;
+		const newColumns = Array.from(board.columns);
+		const sourceColumn = newColumns.find(col => col.id === source.droppableId);
+		const destColumn = newColumns.find(col => col.id === destination.droppableId);
+
+		if (sourceColumn && destColumn) {
+			const sourceCards = Array.from(sourceColumn.cards);
+			const destCards = source.droppableId === destination.droppableId ? sourceCards : Array.from(destColumn.cards);
+			const [movedCard] = sourceCards.splice(source.index, 1);
+			destCards.splice(destination.index, 0, movedCard);
+
+			const updatedColumns = newColumns.map(col => {
+				if (col.id === source.droppableId) {
+					return { ...col, cards: sourceCards };
+				}
+				if (col.id === destination.droppableId) {
+					return { ...col, cards: destCards };
+				}
+				return col;
+			});
+
+			setBoard({ ...board, columns: updatedColumns });
+		}
+	};
+
+	if (!board) return <div>Loading...</div>;
+
+	return (
+		<DragDropContext onDragEnd={onDragEnd}>
+			<div className="kanban-board">
+				<h1>{board.title}</h1>
+				<div className="kanban-board-columns">
+					{board.columns.map(column => (
+						<KanbanColumn key={column.id} {...column} />
+					))}
+				</div>
+			</div>
+		</DragDropContext>
+	);
 };

@@ -56,8 +56,7 @@ export const KanbanBoard: React.FC = () => {
     };
 
     loadBoard();
-    console.log('Board data:', board);
-  }, [board]);
+  }, []); // Empty dependency array means this effect runs once on mount
 
   const onDragStart = (start: DragStart) => {
     console.log('Drag started', start);
@@ -92,10 +91,11 @@ export const KanbanBoard: React.FC = () => {
 		}
 	};
 
+	if (error) return <div>Error: {error}</div>;
 	if (!board) return <div>Loading...</div>;
 
 	return (
-		<DragDropContext onDragEnd={onDragEnd}>
+		<DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
 			<div className="kanban-board">
 				<h1>{board.title}</h1>
 				<div className="kanban-board-columns">

@@ -17,5 +17,4 @@ pub use self::card::Card;
 pub use self::label::Label;
 /// Exporting the CustomField model.
 pub use self::custom_field::CustomField;
-
-
+pub use self::custom_field::CustomFieldType;

@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use crate::models::Identifiable;
-use crate::models::kanban::CustomFieldType;
+use super::CustomFieldType;
 
 /// Struct for representing a custom field of a card in a kanban board.
 pub struct CustomField {

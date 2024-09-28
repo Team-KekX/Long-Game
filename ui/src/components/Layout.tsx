@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SideBar from './SideBar';
 import { KanbanBoard } from './Kanban/KanbanBoard';
 import './Layout.css';
+import ShoppingList from './Shopping/ShoppingList';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [currentView, setCurrentView] = useState<'home' | 'kanban' | 'shopping' | 'mealPlanner' | 'settings' | 'feedback'>('home');
@@ -13,7 +14,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             case 'home':
                 return children;
             case 'shopping':
-                return <div>Shopping List View</div>;
+                return <ShoppingList />;
             case 'mealPlanner':
                 return <div>Meal Planner View</div>;
             case 'settings':

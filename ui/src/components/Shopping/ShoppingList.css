@@ -1,0 +1,20 @@
+.shopping-list {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.shopping-list-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.shopping-list-input {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.shopping-list-items {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}

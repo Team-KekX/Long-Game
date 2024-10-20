@@ -3,6 +3,7 @@
 use uuid::Uuid;
 
 pub mod kanban;
+pub mod user;
 
 /// Trait for entities that have an identifier.
 pub trait Identifiable {

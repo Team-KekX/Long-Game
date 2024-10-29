@@ -1,10 +1,12 @@
 package eu.kekx.long_game.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
+import eu.kekx.long_game.persistence.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +18,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.test.context.ActiveProfiles;
 
 import eu.kekx.long_game.domain.User;
-import eu.kekx.long_game.persistence.user.QueryUserRepository;
 
 @ActiveProfiles("test")
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Repository.class))
-public class QueryUserRepositoryTest {
+public class UserRepositoryTest {
     
     @Autowired
-    QueryUserRepository queryUserRepository;
+    UserRepository queryUserRepository;
 
     @Autowired
     TestEntityManager entityManager;
@@ -41,14 +42,14 @@ public class QueryUserRepositoryTest {
     }
 
     @Test
-    void queryById_WhenIdDoesNotExist_ReturnsEmptyOptional() {
-        Optional<User> result = queryUserRepository.queryById(999L);
+    void findById_WhenIdDoesNotExist_ReturnsEmptyOptional() {
+        Optional<User> result = queryUserRepository.findById(999L);
         
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void queryById_WhenIdExists_ReturnsUser() {
+    void findById_WhenIdExists_ReturnsUser() {
         User user1 = new User();
         user1.setUsername("userZ");
         user1.setEmail("user@example.com");
@@ -56,7 +57,7 @@ public class QueryUserRepositoryTest {
         user1 = entityManager.persist(user1);
         entityManager.flush();
 
-        Optional<User> result = queryUserRepository.queryById(user1.getId());
+        Optional<User> result = queryUserRepository.findById(user1.getId());
         
         assertTrue(result.isPresent());
         assertEquals(user1.getId(), result.get().getId());
@@ -65,20 +66,20 @@ public class QueryUserRepositoryTest {
     }
 
     @Test
-    void queryByUsername_WhenUsernameDoesNotExist_ReturnsEmptyOptional() {
-        Optional<User> result = queryUserRepository.queryByUsername("nonexistent");
+    void findByUsername_WhenUsernameDoesNotExist_ReturnsEmptyOptional() {
+        Optional<User> result = queryUserRepository.findByUsername("nonexistent");
         
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void queryByUsername_WhenUsernameExists_ReturnsUser() {
+    void findByUsername_WhenUsernameExists_ReturnsUser() {
         String username = "user1";
         User user = entityManager.getEntityManager().createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
                 .setParameter("username", username)
                 .getSingleResult();
         
-        Optional<User> result = queryUserRepository.queryByUsername(username);
+        Optional<User> result = queryUserRepository.findByUsername(username);
         
         assertTrue(result.isPresent());
         assertEquals(user.getId(), result.get().getId());
@@ -87,20 +88,20 @@ public class QueryUserRepositoryTest {
     }
 
     @Test
-    void queryByEmail_WhenEmailDoesNotExist_ReturnsEmptyOptional() {
-        Optional<User> result = queryUserRepository.queryByEmail("nonexistent@example.com");
+    void findByEmail_WhenEmailDoesNotExist_ReturnsEmptyOptional() {
+        Optional<User> result = queryUserRepository.findByEmail("nonexistent@example.com");
         
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void queryByEmail_WhenEmailExists_ReturnsUser() {
+    void findByEmail_WhenEmailExists_ReturnsUser() {
         String email = "user1@example.com";
         User user = entityManager.getEntityManager().createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
                 .setParameter("email", email)
                 .getSingleResult();
         
-        Optional<User> result = queryUserRepository.queryByEmail(email);
+        Optional<User> result = queryUserRepository.findByEmail(email);
         
         assertTrue(result.isPresent());
         assertEquals(user.getId(), result.get().getId());
@@ -108,5 +109,36 @@ public class QueryUserRepositoryTest {
         assertEquals(user.getEmail(), result.get().getEmail());
     }
 
+    @Test
+    void existsByUsername_WhenUsernameDoesNotExist_ReturnsFalse() {
+        boolean exists = queryUserRepository.existsByUsername("nonexistent");
+        
+        assertFalse(exists);
+    }
+
+    @Test
+    void existsByUsername_WhenUsernameExists_ReturnsTrue() {
+        String username = "user1";
+        
+        boolean exists = queryUserRepository.existsByUsername(username);
+        
+        assertTrue(exists);
+    }
+
+    @Test
+    void existsByEmail_WhenEmailDoesNotExist_ReturnsFalse() {
+        boolean exists = queryUserRepository.existsByEmail("nonexistent@example.com");
+        
+        assertFalse(exists);
+    }
+
+    @Test
+    void existsByEmail_WhenEmailExists_ReturnsTrue() {
+        String email = "user1@example.com";
+        
+        boolean exists = queryUserRepository.existsByEmail(email);
+        
+        assertTrue(exists);
+    }
 
 }

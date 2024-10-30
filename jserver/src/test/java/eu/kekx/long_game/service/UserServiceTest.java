@@ -35,10 +35,10 @@ public class UserServiceTest {
     }
 
     @Test
-    void createUser_WhenUsernameIsBlank_ThrowsNullPointerException() {
+    void createUser_WhenUsernameIsBlank_ThrowsIllegalArgumentException() {
         var request = new UserRequest("", "test@example.com", "password");
         
-        assertThrows(NullPointerException.class, () -> userService.createUser(request));
+        assertThrows(IllegalArgumentException.class, () -> userService.createUser(request));
     }
 
     @Test
@@ -49,10 +49,10 @@ public class UserServiceTest {
     }
 
     @Test
-    void createUser_WhenEmailIsBlank_ThrowsNullPointerException() {
+    void createUser_WhenEmailIsBlank_ThrowsIllegalArgumentException() {
         var request = new UserRequest("username", "", "password");
         
-        assertThrows(NullPointerException.class, () -> userService.createUser(request));
+        assertThrows(IllegalArgumentException.class, () -> userService.createUser(request));
     }
 
     @Test
@@ -63,10 +63,10 @@ public class UserServiceTest {
     }
 
     @Test
-    void createUser_WhenPasswordIsBlank_ThrowsNullPointerException() {
+    void createUser_WhenPasswordIsBlank_ThrowsIllegalArgumentException() {
         var request = new UserRequest("username", "test@example.com", "");
         
-        assertThrows(NullPointerException.class, () -> userService.createUser(request));
+        assertThrows(IllegalArgumentException.class, () -> userService.createUser(request));
     }
 
     @Test

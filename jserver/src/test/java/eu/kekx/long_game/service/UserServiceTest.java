@@ -4,6 +4,7 @@ import eu.kekx.long_game.domain.User;
 import eu.kekx.long_game.persistence.user.UserRepository;
 import eu.kekx.long_game.presentation.request.UserRequest;
 import eu.kekx.long_game.service.domain.UserService;
+import eu.kekx.long_game.service.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,14 +18,16 @@ public class UserServiceTest {
 
     UserRepository mockUserRepository;
     PasswordEncoder mockPasswordEncoder;
+    JwtService mockJwtService;
     UserService userService;
 
     @BeforeEach
     void setUp() {
         mockUserRepository = mock(UserRepository.class);
         mockPasswordEncoder = mock(PasswordEncoder.class);
+        mockJwtService = mock(JwtService.class);
         when(mockPasswordEncoder.encode(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
-        userService = new UserService(mockUserRepository, mockPasswordEncoder);
+        userService = new UserService(mockUserRepository, mockPasswordEncoder, mockJwtService);
     }
 
     @Test
@@ -105,7 +108,7 @@ public class UserServiceTest {
         assertNotNull(result);
         assertEquals("username", result.getUsername());
         assertEquals("test@example.com", result.getEmail());
-        assertEquals("password", result.comparePasswords("password", mockPasswordEncoder));
+        assertEquals("password", result.getPassword());
         
         verify(mockUserRepository).save(any(User.class));
     }

@@ -1,4 +1,4 @@
-package eu.kekx.long_game.service;
+package eu.kekx.long_game.service.domain;
 
 import eu.kekx.long_game.domain.User;
 import eu.kekx.long_game.persistence.user.UserRepository;
@@ -6,6 +6,7 @@ import eu.kekx.long_game.presentation.request.UserLoginRequest;
 import eu.kekx.long_game.presentation.request.UserRequest;
 import eu.kekx.long_game.presentation.response.UserLoginResponse;
 import eu.kekx.long_game.service.exceptions.NotFoundException;
+import eu.kekx.long_game.service.security.JwtService;
 import eu.kekx.long_game.service.utils.DtoUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

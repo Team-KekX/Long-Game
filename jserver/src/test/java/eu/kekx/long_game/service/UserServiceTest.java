@@ -3,8 +3,10 @@ package eu.kekx.long_game.service;
 import eu.kekx.long_game.domain.User;
 import eu.kekx.long_game.persistence.user.UserRepository;
 import eu.kekx.long_game.presentation.request.UserRequest;
+import eu.kekx.long_game.service.domain.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,12 +16,15 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
 
     UserRepository mockUserRepository;
+    PasswordEncoder mockPasswordEncoder;
     UserService userService;
 
     @BeforeEach
     void setUp() {
         mockUserRepository = mock(UserRepository.class);
-        userService = new UserService(mockUserRepository);
+        mockPasswordEncoder = mock(PasswordEncoder.class);
+        when(mockPasswordEncoder.encode(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+        userService = new UserService(mockUserRepository, mockPasswordEncoder);
     }
 
     @Test
@@ -100,7 +105,7 @@ public class UserServiceTest {
         assertNotNull(result);
         assertEquals("username", result.getUsername());
         assertEquals("test@example.com", result.getEmail());
-        assertEquals("password", result.getPassword());
+        assertEquals("password", result.comparePasswords("password", mockPasswordEncoder));
         
         verify(mockUserRepository).save(any(User.class));
     }

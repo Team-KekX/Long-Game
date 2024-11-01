@@ -7,6 +7,7 @@ import eu.kekx.long_game.service.domain.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,9 +26,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public HttpEntity<Void> createUser(@RequestBody UserRequest userRequest) {
+    public HttpEntity<String> createUser(@RequestBody UserRequest userRequest) {
         userService.createUser(userRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body("User was successfully registered");
     }
 
     @PostMapping("/login")

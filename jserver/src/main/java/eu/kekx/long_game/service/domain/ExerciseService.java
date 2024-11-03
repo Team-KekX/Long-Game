@@ -2,6 +2,7 @@ package eu.kekx.long_game.service.domain;
 
 import eu.kekx.long_game.domain.workout.Exercise;
 import eu.kekx.long_game.domain.workout.ExerciseMetricDefinition;
+import eu.kekx.long_game.persistence.workout.CustomMetricTypeRepository;
 import eu.kekx.long_game.persistence.workout.ExerciseRepository;
 import eu.kekx.long_game.presentation.request.CreateExerciseRequest;
 import eu.kekx.long_game.presentation.request.MetricDefinitionRequest;
@@ -19,6 +20,7 @@ import java.util.Objects;
 public class ExerciseService {
     
     private final ExerciseRepository exerciseRepository;
+    private final CustomMetricTypeRepository customMetricTypeRepository;
 
     @Transactional
     public Exercise createExercise(CreateExerciseRequest dto) {
@@ -33,7 +35,16 @@ public class ExerciseService {
         for (MetricDefinitionRequest metricDto : dto.metricDefinitions()) {
             var metricDefinition = new ExerciseMetricDefinition();
             metricDefinition.setExercise(exercise);
-            metricDefinition.setType(metricDto.type());
+            
+            if (metricDto.builtInType() != null) {
+                metricDefinition.setBuiltInType(metricDto.builtInType());
+            } else {
+                var customType = customMetricTypeRepository.findById(metricDto.customMetricTypeId())
+                    .orElseThrow(() -> new NotFoundException("Custom metric type with id [" + 
+                        metricDto.customMetricTypeId() + "] not found"));
+                metricDefinition.setCustomType(customType);
+            }
+            
             metricDefinition.setRequired(metricDto.required());
             metricDefinition.setUnit(metricDto.unit());
             

@@ -44,33 +44,33 @@ public class ExerciseService {
     }
     
     @Transactional
-    public Exercise modifyExercise(Long exerciseId, ModifyExerciseRequest dto) {
+    public Exercise modifyExercise(ModifyExerciseRequest dto) {
         Objects.requireNonNull(dto, "ModifyExerciseRequest must not be null");
+        Objects.requireNonNull(dto.exerciseId(), "Exercise ID must not be null");
         
-        var exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NotFoundException("Exercise with id [" + exerciseId + "] not found"));
+        var exercise = exerciseRepository.findById(dto.exerciseId())
+                .orElseThrow(() -> new NotFoundException("Exercise with id [" + dto.exerciseId() + "] not found"));
         
-        // Only update fields that are present in the request
-        dto.name().ifPresent(name -> {
-            if (name.isBlank()) {
+        if (dto.name() != null) {
+            if (dto.name().isBlank()) {
                 throw new IllegalArgumentException("Name cannot be blank");
             }
-            exercise.setName(name);
-        });
+            exercise.setName(dto.name());
+        }
         
-        dto.description().ifPresent(description -> {
-            if (description.isBlank()) {
+        if (dto.description() != null) {
+            if (dto.description().isBlank()) {
                 throw new IllegalArgumentException("Description cannot be blank");
             }
-            exercise.setDescription(description);
-        });
+            exercise.setDescription(dto.description());
+        }
         
-        dto.link().ifPresent(link -> {
-            if (link.isBlank()) {
+        if (dto.link() != null) {
+            if (dto.link().isBlank()) {
                 throw new IllegalArgumentException("Link cannot be blank");
             }
-            exercise.setLink(link);
-        });
+            exercise.setLink(dto.link());
+        }
         
         return exerciseRepository.save(exercise);
     }

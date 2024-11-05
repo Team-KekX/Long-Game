@@ -1,4 +1,4 @@
-package eu.kekx.long_game.presentation;
+package eu.kekx.long_game.presentation.api;
 
 import eu.kekx.long_game.presentation.request.UserLoginRequest;
 import eu.kekx.long_game.presentation.request.UserRequest;

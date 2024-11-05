@@ -3,6 +3,7 @@ package eu.kekx.long_game.presentation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.kekx.long_game.configuration.test.SecuredWebMvcTest;
 import eu.kekx.long_game.persistence.user.UserRepository;
+import eu.kekx.long_game.presentation.api.UserController;
 import eu.kekx.long_game.presentation.request.UserLoginRequest;
 import eu.kekx.long_game.presentation.request.UserRequest;
 import eu.kekx.long_game.presentation.response.UserLoginResponse;
